@@ -107,6 +107,12 @@
                         <div class="label"></div>
                     </div>
                 </div>
+                <!-- Student Registration Checkbox (only additional field) -->
+                <div class="form-check mb-3">
+                    <input type="checkbox" class="form-check-input" id="is_student" name="is_student" value="1" {{ old('is_student') ? 'checked' : '' }}>
+                    <label class="form-check-label" for="is_student">{{ __('I am registering as a student.') }}</label>
+                </div>
+
                 <div class="form-check custom-checkbox">
                     <input type="checkbox" class="form-check-input" id="termsCheckbox" name="terms" required="required">
                     <label class="form-check-label text-sm" for="termsCheckbox">{{ __('I agree to the ') }}

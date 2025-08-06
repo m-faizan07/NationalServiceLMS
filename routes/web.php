@@ -155,6 +155,11 @@ use App\Http\Controllers\PayHereController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\ReferralProgramController;
 use App\Http\Controllers\TapController;
+use App\Http\Controllers\Student\StudentController;
+use App\Http\Controllers\Student\ApplicationStatusController;
+use App\Http\Controllers\Student\DocumentController as StudentDocumentController;
+use App\Http\Controllers\Student\StudentProfileController;
+use App\Http\Controllers\Student\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
@@ -1805,3 +1810,43 @@ Route::group(['middleware' => ['verified']], function () {
 
 Route::any('/cookie-consent', [SystemController::class, 'CookieConsent'])->name('cookie-consent');
 Route::get('payslip/payslipPdf/{id}/{month}', [PaySlipController::class, 'payslipPdf'])->name('payslip.payslipPdf')->middleware(['XSS']);
+
+// Landing Page Routes
+
+// Student Auth
+// Route::get('/get-register', [AuthController::class, 'getRegister'])->name('get.register');
+// Route::post('/student-register', [AuthController::class, 'postRegister'])->name('post.register');
+// Route::get('/get-login', [AuthController::class, 'getLogin'])->name('get.login');
+// Route::post('/student-login', [AuthController::class, 'postLogin'])->name('post.login');
+// // Main Home
+Route::get('/landing-page', [StudentController::class, 'index'])->name('landing_page');
+Route::get('/contact', [StudentController::class, 'contact'])->name('student_contact');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::prefix('student')->name('student.')->group(function () {
+    Route::middleware(['guest:student'])->group(function () {
+        Route::get('register', [AuthController::class, 'getRegister'])->name('register');
+        Route::post('register', [AuthController::class, 'postRegister'])->name('register.submit');
+        Route::get('login', [AuthController::class, 'getLogin'])->name('login');
+        Route::post('login', [AuthController::class, 'postLogin'])->name('login.submit');
+    });
+
+    Route::middleware(['auth:student'])->group(function () {
+        Route::get('dashboard', function () {
+            return view('landing-page.student.dashboard');
+        })->name('dashboard');
+        // Profile routes
+        Route::get('/profile', [StudentProfileController::class, 'showForm'])->name('profile.form');
+        Route::post('/profile', [StudentProfileController::class, 'submitForm'])->name('profile.submit');
+        
+        // Documents routes
+        Route::get('/documents', [StudentDocumentController::class, 'index'])->name('documents');
+        Route::post('/documents', [StudentDocumentController::class, 'store'])->name('documents.store');
+        Route::get('/documents/{document}/download', [StudentDocumentController::class, 'download'])->name('documents.download');
+        Route::delete('/documents/{document}', [StudentDocumentController::class, 'destroy'])->name('documents.destroy');
+        
+        // Application status
+        Route::get('/status', [ApplicationStatusController::class, 'index'])->name('status');
+    });
+});
+
