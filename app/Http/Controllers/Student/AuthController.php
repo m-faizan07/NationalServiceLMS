@@ -59,7 +59,15 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => $request->password,
         ])) {
-            return redirect()->route('student.dashboard');
+
+            $student = Auth::guard('student')->user();
+            $profile = $student->profile;
+            $permanentAddress = $student->addresses()->where('type', 'permanent')->first();
+            $presentAddress = $student->addresses()->where('type', 'present')->first();
+            $parentDetail = $student->parentDetail;
+            $documents = $student->documents()->get()->keyBy('type');
+
+            return view('landing-page.student.dashboard', compact('profile', 'permanentAddress', 'presentAddress', 'parentDetail', 'documents'));
         }
 
         return back()->withErrors([

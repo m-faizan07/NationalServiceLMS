@@ -1552,7 +1552,7 @@
                 @endif
 
 
-                @can('manage user')
+                <!-- @can('manage user')
                     <li
                         class="dash-item dash-hasmenu {{ Request::route()->getName() == 'users.index' || Request::route()->getName() == 'users.create' || Request::route()->getName() == 'users.edit' ? ' active' : '' }}">
                         <a href="{{ route('users.index') }}" class="dash-link">
@@ -1569,25 +1569,73 @@
                                 class="dash-mtext">{{ __('Plan') }}</span>
                         </a>
                     </li>
+                @endif -->
+                 <!-- @if (\Auth::user()->type == 'super admin')
+                    <li class="dash-item dash-hasmenu {{ request()->is('plan_request*') ? 'active' : '' }}">
+                        <a href="{{ route('plan_request.index') }}" class="dash-link">
+                            <span class="dash-micon"><i class="ti ti-arrow-up-right-circle"></i></span><span
+                                class="dash-mtext">{{ __('Applications') }}</span>
+                        </a>
+                    </li>
+                @endif -->
+                @if (\Auth::user()->type == 'super admin')
+                    <li class="dash-item dash-hasmenu {{ request()->is('plan_request*') ? 'active' : '' }}">
+                        <a href="{{ route('plan_request.index') }}" class="dash-link">
+                            <span class="dash-micon"><i class="ti ti-arrow-up-right-circle"></i></span><span
+                                class="dash-mtext">{{ __('Applications') }}</span>
+                        </a>
+                    </li>
                 @endif
                 @if (\Auth::user()->type == 'super admin')
                     <li class="dash-item dash-hasmenu {{ request()->is('plan_request*') ? 'active' : '' }}">
                         <a href="{{ route('plan_request.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-arrow-up-right-circle"></i></span><span
-                                class="dash-mtext">{{ __('Plan Request') }}</span>
+                                class="dash-mtext">{{ __('Interviews') }}</span>
+                        </a>
+                    </li>
+                @endif
+                @if (\Auth::user()->type == 'super admin')
+                    <li class="dash-item dash-hasmenu {{ request()->is('plan_request*') ? 'active' : '' }}">
+                        <a href="{{ route('plan_request.index') }}" class="dash-link">
+                            <span class="dash-micon"><i class="ti ti-arrow-up-right-circle"></i></span><span
+                                class="dash-mtext">{{ __('Batches') }}</span>
+                        </a>
+                    </li>
+                @endif
+                @if (\Auth::user()->type == 'super admin')
+                    <li class="dash-item dash-hasmenu {{ request()->is('plan_request*') ? 'active' : '' }}">
+                        <a href="{{ route('plan_request.index') }}" class="dash-link">
+                            <span class="dash-micon"><i class="ti ti-arrow-up-right-circle"></i></span><span
+                                class="dash-mtext">{{ __('Communications') }}</span>
+                        </a>
+                    </li>
+                @endif
+                @if (\Auth::user()->type == 'super admin')
+                    <li class="dash-item dash-hasmenu {{ request()->is('plan_request*') ? 'active' : '' }}">
+                        <a href="{{ route('plan_request.index') }}" class="dash-link">
+                            <span class="dash-micon"><i class="ti ti-arrow-up-right-circle"></i></span><span
+                                class="dash-mtext">{{ __('Student Management') }}</span>
+                        </a>
+                    </li>
+                @endif
+                @if (\Auth::user()->type == 'super admin')
+                    <li class="dash-item dash-hasmenu {{ request()->is('plan_request*') ? 'active' : '' }}">
+                        <a href="{{ route('plan_request.index') }}" class="dash-link">
+                            <span class="dash-micon"><i class="ti ti-arrow-up-right-circle"></i></span><span
+                                class="dash-mtext">{{ __('User Management') }}</span>
                         </a>
                     </li>
                 @endif
 
-                <li class="dash-item dash-hasmenu  {{ Request::segment(1) == '' ? 'active' : '' }}">
+                <!-- <li class="dash-item dash-hasmenu  {{ Request::segment(1) == '' ? 'active' : '' }}">
                     <a href="{{ route('referral-program.index') }}" class="dash-link">
                         <span class="dash-micon"><i class="ti ti-discount-2"></i></span><span
                             class="dash-mtext">{{ __('Referral Program') }}</span>
                     </a>
-                </li>
+                </li> -->
 
 
-                @if (Gate::check('manage coupon'))
+                <!-- @if (Gate::check('manage coupon'))
                     <li class="dash-item dash-hasmenu {{ Request::segment(1) == 'coupons' ? 'active' : '' }}">
                         <a href="{{ route('coupons.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-gift"></i></span><span
@@ -1602,18 +1650,18 @@
                                 class="dash-mtext">{{ __('Order') }}</span>
                         </a>
                     </li>
-                @endif
-                <li
+                @endif -->
+                <!-- <li
                     class="dash-item dash-hasmenu {{ Request::segment(1) == 'email_template' || Request::route()->getName() == 'manage.email.language' ? ' active dash-trigger' : 'collapsed' }}">
                     <a href="{{ route('email_template.index') }}" class="dash-link">
                         <span class="dash-micon"><i class="ti ti-template"></i></span>
                         <span class="dash-mtext">{{ __('Email Template') }}</span>
                     </a>
-                </li>
+                </li> -->
 
-                @if (\Auth::user()->type == 'super admin')
+                <!-- @if (\Auth::user()->type == 'super admin')
                     @include('landingpage::menu.landingpage')
-                @endif
+                @endif -->
 
                 @if (Gate::check('manage system settings'))
                     <li

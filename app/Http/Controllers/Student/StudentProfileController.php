@@ -18,8 +18,9 @@ class StudentProfileController extends Controller
         $permanentAddress = $student->addresses()->where('type', 'permanent')->first();
         $presentAddress = $student->addresses()->where('type', 'present')->first();
         $parentDetail = $student->parentDetail;
+        $documents = $student->documents()->get()->keyBy('type');
 
-        return view('landing-page.student.profile-form', compact('profile', 'permanentAddress', 'presentAddress', 'parentDetail'));
+        return view('landing-page.student.profile-form', compact('profile', 'permanentAddress', 'presentAddress', 'parentDetail', 'documents'));
     }
 
     public function submitForm(Request $request)
@@ -30,7 +31,7 @@ class StudentProfileController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'nid' => 'required|string|max:255|unique:student_profiles,nid,'.$student->id.',student_id',
-            'mobile_no' => 'required|string|max:20',
+            'mobile_no' => 'required|string|max:15',
             'dob' => 'required|date',
             
             // Permanent address

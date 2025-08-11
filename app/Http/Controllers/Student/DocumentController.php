@@ -33,53 +33,44 @@ class DocumentController extends Controller
     public function store(Request $request)
     {
         $student = Auth::guard('student')->user();
-        $type = $request->input('type');
-        
-        $validationRules = [
-            'file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+
+        // Allowed document keys matching your input names
+        $documents = [
+            'national_id',
+            'passport_photo',
+            'school_leaving',
+            'police_report',
+            'parent_consent',
+            'olevel',
+            'alevel'
         ];
-        
-        // Additional validation based on document type
-        switch($type) {
-            case 'school_leaving':
-                $validationRules['school_name'] = 'required|string|max:255';
-                $validationRules['year'] = 'required|digits:4';
-                $validationRules['report_number'] = 'required|string|max:255';
-                break;
-                
-            case 'olevel':
-            case 'alevel':
-                $validationRules['school_name'] = 'required|string|max:255';
-                $validationRules['year'] = 'required|digits:4';
-                $validationRules['subjects'] = 'required|string|max:500';
-                $validationRules['result'] = 'required|string|max:255';
-                break;
-                
-            case 'police_report':
-                $validationRules['report_number'] = 'required|string|max:255';
-                break;
+
+        foreach ($documents as $type) {
+            if ($request->hasFile($type)) {
+                $file = $request->file($type);
+
+                // Optional: validate file size and type
+                $request->validate([
+                    $type => 'mimes:pdf,jpg,jpeg,png|max:2048' // 2MB max
+                ]);
+
+                // Store file
+                $filePath = $file->store("documents/{$student->id}", 'public');
+
+                // Save record in DB
+                StudentDocument::updateOrCreate(
+                    [
+                        'student_id' => $student->id,
+                        'type'       => $type
+                    ],
+                    [
+                        'file_path'  => $filePath
+                    ]
+                );
+            }
         }
-        
-        $validated = $request->validate($validationRules);
-        
-        // Upload file
-        $filePath = $request->file('file')->store('documents/'.$student->id, 'public');
-        
-        // Create document record
-        $document = new StudentDocument([
-            'student_id' => $student->id,
-            'type' => $type,
-            'file_path' => $filePath,
-            'report_number' => $validated['report_number'] ?? null,
-            'school_name' => $validated['school_name'] ?? null,
-            'year' => $validated['year'] ?? null,
-            'subjects' => $validated['subjects'] ?? null,
-            'result' => $validated['result'] ?? null,
-        ]);
-        
-        $document->save();
-        
-        return back()->with('success', 'Document uploaded successfully!');
+
+        return back()->with('success', 'Documents uploaded successfully!');
     }
     
     public function download(StudentDocument $document)
