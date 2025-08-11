@@ -1821,7 +1821,7 @@ Route::get('payslip/payslipPdf/{id}/{month}', [PaySlipController::class, 'paysli
 // // Main Home
 Route::get('/landing-page', [StudentController::class, 'index'])->name('landing_page');
 Route::get('/contact', [StudentController::class, 'contact'])->name('student_contact');
-Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::prefix('student')->name('student.')->group(function () {
     Route::middleware(['guest:student'])->group(function () {
