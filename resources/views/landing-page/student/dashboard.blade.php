@@ -380,6 +380,43 @@ document.addEventListener('DOMContentLoaded', function() {
         .btn-link:hover i {
             color: black;
         }
+        .status-step {
+            text-align: center;
+            position: relative;
+            flex: 1;
+        }
+
+        .status-step.completed {
+            color: #28a745; /* Green for completed steps */
+        }
+
+        .status-step.current {
+            color: #007bff; /* Blue for current step */
+        }
+
+        .status-step .circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 5px;
+        }
+
+        .status-step.completed .circle {
+            border-color: #28a745;
+            background: #28a745;
+            color: white;
+        }
+
+        .status-step.current .circle {
+            border-color: #007bff;
+            background: #007bff;
+            color: white;
+        }
     </style>
 </head>
 <body>
@@ -428,28 +465,81 @@ document.addEventListener('DOMContentLoaded', function() {
                             <h5 class="card-title">Application Status</h5>
                             <p class="text-muted">Track your application progress</p>
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Status: <span class="badge bg-warning text-dark">Under Review</span></span>
-                                <span>75%</span>
+                                <span>Status: <span class="badge bg-warning text-dark">
+                                    @if(!empty($student))
+                                        {{ucfirst($student->status)}}
+                                    @else
+                                        Pending
+                                    @endif
+                                </span></span>
+                                @php
+                                    $percentage = 0;
+                                    $statusClass = 'bg-warning';
+                                    
+                                    // Progress calculation
+                                    if(!empty($profile)) {
+                                        $percentage = 50;
+                                        $statusClass = 'bg-primary';
+                                    }
+                                    if($student->status === 'approved') {
+                                        $percentage = 75;
+                                        $statusClass = 'bg-info';
+                                    }
+                                    if($student->status === 'interview') {
+                                        $percentage = 100;
+                                        $statusClass = 'bg-success';
+                                    }
+                                    if($student->status === 'rejected') {
+                                        $percentage = 100;
+                                        $statusClass = 'bg-danger';
+                                    }
+                                @endphp
+                                {{ $percentage }}%
                             </div>
                             <div class="progress mb-4">
-                                <div class="progress-bar bg-primary" style="width: 75%;"></div>
+                                <div class="progress-bar {{ $statusClass }}" 
+                                    style="width: {{ $percentage }}%;"
+                                    role="progressbar" 
+                                    aria-valuenow="{{ $percentage }}" 
+                                    aria-valuemin="0" 
+                                    aria-valuemax="100">
+                                </div>
                             </div>
                             <div class="d-flex justify-content-between">
+                                <!-- Step 1: Submitted -->
                                 <div class="status-step completed">
                                     <div class="circle">✓</div>
                                     <div>Submitted</div>
                                 </div>
-                                <div class="status-step completed">
-                                    <div class="circle">✓</div>
-                                    <div>Initial Review</div>
+                                
+                                <!-- Step 2: Profile Review -->
+                                <div class="status-step @if($percentage >= 50) completed @endif">
+                                    <div class="circle">@if($percentage >= 50) ✓ @else ⏳ @endif</div>
+                                    <div>Profile Review</div>
                                 </div>
-                                <div class="status-step current">
-                                    <div class="circle">⏳</div>
-                                    <div>Document Review</div>
+                                
+                                <!-- Step 3: Approval -->
+                                <div class="status-step @if($percentage >= 75) completed @endif">
+                                    <div class="circle">@if($percentage >= 75) ✓ @else • @endif</div>
+                                    <div>Approval</div>
                                 </div>
-                                <div class="status-step">
-                                    <div class="circle">•</div>
-                                    <div>Interview</div>
+                                
+                                <!-- Step 4: Interview/Completion -->
+                                <div class="status-step @if($percentage == 100) completed @endif">
+                                    <div class="circle">
+                                        @if($percentage == 100)
+                                            @if($student->status === 'rejected') ✗ @else ✓ @endif
+                                        @else 
+                                            •
+                                        @endif
+                                    </div>
+                                    <div>
+                                        @if($student->status === 'rejected')
+                                            Rejected
+                                        @else
+                                            Interview
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>

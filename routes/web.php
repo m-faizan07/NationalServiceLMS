@@ -162,6 +162,7 @@ use App\Http\Controllers\Student\StudentProfileController;
 use App\Http\Controllers\Student\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\ApplicationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -1516,7 +1517,9 @@ Route::group(['middleware' => ['verified']], function () {
     Route::get('request_send/{id}', [PlanRequestController::class, 'userRequest'])->name('send.request')->middleware(['auth', 'XSS']);
     Route::get('request_response/{id}/{response}', [PlanRequestController::class, 'acceptRequest'])->name('response.request')->middleware(['auth', 'XSS']);
     Route::get('request_cancel/{id}', [PlanRequestController::class, 'cancelRequest'])->name('request.cancel')->middleware(['auth', 'XSS']);
-    //QR Code Module
+    // Application Request Plan
+    Route::get('applications', [ApplicationController::class, 'index'])->name('applications.index')->middleware(['auth', 'XSS']);
+    Route::get('apllication_response/{id}/{response}', [ApplicationController::class, 'acceptRequest'])->name('apllication.response')->middleware(['auth', 'XSS']);
 
     // Import/Export Data Route
 

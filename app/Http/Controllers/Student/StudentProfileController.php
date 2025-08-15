@@ -20,7 +20,7 @@ class StudentProfileController extends Controller
         $parentDetail = $student->parentDetail;
         $documents = $student->documents()->get()->keyBy('type');
 
-        return view('landing-page.student.profile-form', compact('profile', 'permanentAddress', 'presentAddress', 'parentDetail', 'documents'));
+        return view('landing-page.student.profile-form', compact('student', 'profile', 'permanentAddress', 'presentAddress', 'parentDetail', 'documents'));
     }
 
     public function submitForm(Request $request)
