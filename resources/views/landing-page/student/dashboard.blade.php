@@ -101,8 +101,8 @@
     font-weight: 600;
 }
 
-.form-group input, 
-.form-group select, 
+.form-group input,
+.form-group select,
 .form-group textarea {
     width: 100%;
     padding: 0.5rem;
@@ -111,7 +111,7 @@
     font-size: 1rem;
 }
 
-.form-group input[type="submit"], 
+.form-group input[type="submit"],
 .btn {
     background: #004080;
     color: white;
@@ -123,7 +123,7 @@
     transition: background 0.3s;
 }
 
-.form-group input[type="submit"]:hover, 
+.form-group input[type="submit"]:hover,
 .btn:hover {
     background: #003366;
 }
@@ -167,7 +167,7 @@
     border-collapse: collapse;
 }
 
-.document-table th, 
+.document-table th,
 .document-table td {
     padding: 0.75rem;
     border: 1px solid #ddd;
@@ -261,7 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const type = this.value;
             const fieldsContainer = document.getElementById('document-fields');
             let html = '';
-            
+
             switch(type) {
                 case 'school_leaving':
                     html = `
@@ -279,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
                     break;
-                    
+
                 case 'olevel':
                 case 'alevel':
                     html = `
@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
                     break;
-                    
+
                 case 'police_report':
                     html = `
                         <div class="form-group">
@@ -310,11 +310,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
                     break;
-                    
+
                 default:
                     html = '';
             }
-            
+
             fieldsContainer.innerHTML = html;
         });
     }
@@ -387,7 +387,8 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="mb-0">Student Dashboard</h4>
         <div>
-            <a href="javascript:void(0)" 
+            <a href="{{ url('/job-portal') }}">Job Portal</a>
+            <a href="javascript:void(0)"
             class="btn btn-link p-0 me-3"
             id="openNotifications">
                 <i class="bi bi-bell fs-5"></i>
@@ -575,9 +576,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <p class="text-muted">Upload and manage your application documents</p>
 
                             <!-- Form -->
-                            <form id="documentUploadForm" 
-                                action="{{ route('student.documents.store') }}" 
-                                method="POST" 
+                            <form id="documentUploadForm"
+                                action="{{ route('student.documents.store') }}"
+                                method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
 
@@ -601,16 +602,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                                 @if(isset($documents[$type]))
                                                     {{-- Download link --}}
-                                                    <a href="{{ asset('storage/'.$documents[$type]->file_path) }}" 
-                                                    target="_blank" 
-                                                    class="btn btn-sm btn-outline-primary" 
+                                                    <a href="{{ asset('storage/'.$documents[$type]->file_path) }}"
+                                                    target="_blank"
+                                                    class="btn btn-sm btn-outline-primary"
                                                     title="Download">
                                                         <i class="bi bi-download"></i>
                                                     </a>
 
                                                     {{-- Delete link --}}
-                                                    <form action="{{ url('student.documents.destroy', $documents[$type]->id) }}" 
-                                                        method="POST" 
+                                                    <form action="{{ url('student.documents.destroy', $documents[$type]->id) }}"
+                                                        method="POST"
                                                         style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
@@ -621,10 +622,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                                                 @else
                                                     {{-- File input only if no document --}}
-                                                    <input type="file" 
-                                                        name="{{ $type }}" 
+                                                    <input type="file"
+                                                        name="{{ $type }}"
                                                         class="form-control form-control-sm d-inline-block"
-                                                        style="width:auto" 
+                                                        style="width:auto"
                                                         accept=".pdf,.jpg,.jpeg,.png">
                                                 @endif
 

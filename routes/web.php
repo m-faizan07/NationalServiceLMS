@@ -1820,6 +1820,8 @@ Route::get('payslip/payslipPdf/{id}/{month}', [PaySlipController::class, 'paysli
 // Route::post('/student-login', [AuthController::class, 'postLogin'])->name('post.login');
 // // Main Home
 Route::get('/landing-page', [StudentController::class, 'index'])->name('landing_page');
+Route::get('/job-portal', [StudentController::class, 'jobPortal'])->name('job-portal');
+
 Route::get('/contact', [StudentController::class, 'contact'])->name('student_contact');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -1838,13 +1840,13 @@ Route::prefix('student')->name('student.')->group(function () {
         // Profile routes
         Route::get('/profile', [StudentProfileController::class, 'showForm'])->name('profile.form');
         Route::post('/profile', [StudentProfileController::class, 'submitForm'])->name('profile.submit');
-        
+
         // Documents routes
         Route::get('/documents', [StudentDocumentController::class, 'index'])->name('documents');
         Route::post('/documents', [StudentDocumentController::class, 'store'])->name('documents.store');
         Route::get('/documents/{document}/download', [StudentDocumentController::class, 'download'])->name('documents.download');
         Route::delete('/documents/{document}', [StudentDocumentController::class, 'destroy'])->name('documents.destroy');
-        
+
         // Application status
         Route::get('/status', [ApplicationStatusController::class, 'index'])->name('status');
     });
