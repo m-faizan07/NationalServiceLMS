@@ -4,12 +4,12 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Index - School Bootstrap Template</title>
+    <title>National Management School</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
   <!-- Favicons -->
-  <link href="{{asset('assets/img/favicon.png')}}" rel="icon">
+  <link href="https://mnu.edu.mv/wp-content/uploads/2021/12/MNU-Logo-Horizontal-Filled-01-e1638420030168.png" rel="icon">
   <link href="{{asset('assets/img/apple-touch-icon.png')}}" rel="apple-touch-icon">
 
   <!-- Fonts -->
@@ -48,18 +48,31 @@
 
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-end">
+      <a href="{{route('landing_page')}}" class="logo d-flex align-items-center me-auto" style="background:none !important;color:black;">
+        <img src="https://mnu.edu.mv/wp-content/uploads/2021/12/MNU-Logo-Horizontal-Filled-01-e1638420030168.png" alt="">
 
-      <a href="{{route('landing_page')}}" class="logo d-flex align-items-center me-auto">
-        <h1 class="sitename">School</h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="{{route('landing_page')}}" class="active">Home</a></li>
-          <li><a href="{{route('student_contact')}}">Contact</a></li>
-          <a href="{{ route('student.register') }}" class="btn btn-success px-4 py-3 fw-bold text-white">
+          <li><a href="{{route('landing_page')}}" class="{{ request()->is('landing-page') ? 'active' : '' }}">Home</a></li>
+          <li>
+    <a href="{{ route('student.register') }}"
+       class="{{ request()->is('student/register') || (request()->is('student/login')) ? 'active' : '' }}">
+       Student Portal
+    </a>
+</li>
+
+<li>
+    <a href="{{ route('job.login') }}"
+       class="{{ request()->is('job-portal') ? 'active' : '' }}">
+       Job Portal
+    </a>
+</li>
+          <li><a href="{{route('student_contact')}}" class="{{ request()->is('contact') ? 'active' : '' }}">Contact</a></li>
+          <!-- <a href="{{ route('student.register') }}" class="btn btn-success px-4 py-3 fw-bold text-white">
             Sign Up
-          </a>
+          </a> -->
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>    
@@ -76,7 +89,15 @@
         <div class="contact-main-wrapper d-flex justify-content-center align-items-center">
           <div class="contact-content">
             <div class="contact-form-container" data-aos="fade-up" data-aos-delay="400">
-              <h2>Login</h2>
+              <h2 style="
+  background: linear-gradient(90deg, hsl(195deg 91.06% 30.27%) 0%, hsl(195, 85%, 45%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+">
+  Login
+</h2>
               <form action="{{route('student.login.submit')}}" method="post">
                 @csrf
                 <div class="row">
@@ -89,7 +110,12 @@
                 </div>
 
                 <div class="form-submit" style="float:right;">
-                  <button type="submit" class="btn-style">Login</button>
+                  <button type="submit" class="btn-style" style="background: linear-gradient(90deg, hsl(195deg 91.06% 30.27%) 0%, hsl(195, 85%, 45%) 100%);
+           color: #fff; 
+           border: none;
+           padding: 10px 20px;
+           border-radius: 6px;
+           cursor: pointer;">Login</button>
                 </div>
               </form>
               

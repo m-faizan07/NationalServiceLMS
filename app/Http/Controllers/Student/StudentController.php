@@ -32,10 +32,22 @@ class StudentController extends Controller
     // }
 
     public function jobPortal() {
-        $students = Student::with(['profile', 'addresses'])->get();
-
-        return view('landing-page.student.job_portal', compact('students'));
+        return view('landing-page.job_portal_login');
     }
+
+    // public function jobPortal(Request $request) {
+    //     $request->authenticate();
+    //     $request->session()->regenerate();
+    //     $user = Auth::user();
+
+    //     if($user->type === 'super admin') {
+    //         dd('Super Admin Logged In', $user);
+    //     }
+
+    //     $students = Student::with(['profile', 'addresses'])->get();
+
+    //     return view('landing-page.student.job_portal', compact('students'));
+    // }
 
     public function contact(){
         if (Auth::guard('student')->check()) {

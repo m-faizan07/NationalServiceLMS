@@ -50,6 +50,7 @@
     <div class="header-container container-fluid container-xl position-relative d-flex align-items-center justify-content-end">
       <a href="{{route('landing_page')}}" class="logo d-flex align-items-center me-auto" style="background:none !important;color:black;">
         <img src="https://mnu.edu.mv/wp-content/uploads/2021/12/MNU-Logo-Horizontal-Filled-01-e1638420030168.png" alt="">
+
       </a>
 
       <nav id="navmenu" class="navmenu">
@@ -57,11 +58,10 @@
           <li><a href="{{route('landing_page')}}" class="{{ request()->is('landing-page') ? 'active' : '' }}">Home</a></li>
           <li>
     <a href="{{ route('student.register') }}"
-       class="{{ request()->is('student/register') || (request()->is('student/login') && !request()->query('job_portal')) ? 'active' : '' }}">
+       class="{{ request()->is('student/register') || (request()->is('student/login')) ? 'active' : '' }}">
        Student Portal
     </a>
 </li>
-
 <li>
     <a href="{{ route('job.login') }}"
        class="{{ request()->is('job-portal') ? 'active' : '' }}">
@@ -88,31 +88,34 @@
         <div class="contact-main-wrapper d-flex justify-content-center align-items-center">
           <div class="contact-content">
             <div class="contact-form-container" data-aos="fade-up" data-aos-delay="400">
-<h2 style="
+                @if (session('success'))
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ $errors->first() }}
+    </div>
+@endif
+              <h2 style="
   background: linear-gradient(90deg, hsl(195deg 91.06% 30.27%) 0%, hsl(195, 85%, 45%) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
 ">
-  Register
+  Login
 </h2>
-              <form action="{{route('student.register.submit')}}" method="post">
+              <form action="{{route('job.login.submit')}}" method="post">
                 @csrf
                 <div class="row">
                   <div class="col-md-12 form-group pb-2">
-                    <input type="text" name="name" class="form-control inp-style" id="name" placeholder="Enter Name *" required="required">
+                    <input type="email" name="email" class="form-control inp-style" id="name" placeholder="Enter Email *" required="required">
                   </div>
                   <div class="col-md-12 form-group pb-2">
-                    <input type="email" name="email" class="form-control inp-style" id="email" placeholder="Enter Email *" required="required">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12 form-group pb-2">
-                    <input type="password" name="password" class="form-control inp-style" id="password" placeholder="Enter Password *" required="required">
-                  </div>
-                  <div class="col-md-12 form-group pb-2">
-                    <input type="password" name="cpassword" class="form-control inp-style" id="cpassword" placeholder="Enter Confirm Password *" required="required">
+                    <input type="password" name="password" class="form-control inp-style" id="name" placeholder="Enter Password *" required="required">
                   </div>
                 </div>
 
@@ -122,13 +125,10 @@
            border: none;
            padding: 10px 20px;
            border-radius: 6px;
-           cursor: pointer;">Register</button>
+           cursor: pointer;">Login</button>
                 </div>
               </form>
               
-            </div>
-            <div>
-                <p style="float:right;">Already have an account? <a href="{{route('student.login')}}">Login</a></p>
             </div>
           </div>
         </div>
@@ -154,6 +154,16 @@
 
   <!-- Main JS File -->
   <script src="{{asset('assets/js-front/main.js')}}"></script>
+<script>
+    setTimeout(function () {
+        let alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            alert.style.transition = "opacity 0.5s ease";
+            alert.style.opacity = "0";
+            setTimeout(() => alert.remove(), 500); // remove from DOM after fadeout
+        });
+    }, 3000); // 3 seconds delay
+</script>
 
 </body>
 

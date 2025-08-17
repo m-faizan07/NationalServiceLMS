@@ -424,7 +424,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="mb-0">Student Dashboard</h4>
         <div>
-            <a href="{{ url('/job-portal') }}">Job Portal</a>
+            <!-- <a href="{{ url('/job-portal') }}">Job Portal</a> -->
             <a href="javascript:void(0)"
             class="btn btn-link p-0 me-3"
             id="openNotifications">
@@ -482,18 +482,21 @@ document.addEventListener('DOMContentLoaded', function() {
                                         $percentage = 50;
                                         $statusClass = 'bg-primary';
                                     }
-                                    if($student->status === 'approved') {
-                                        $percentage = 75;
-                                        $statusClass = 'bg-info';
+                                    if(!empty($student)){
+                                        if($student->status === 'approved') {
+                                            $percentage = 75;
+                                            $statusClass = 'bg-info';
+                                        }
+                                        if($student->status === 'interview') {
+                                            $percentage = 100;
+                                            $statusClass = 'bg-success';
+                                        }
+                                        if($student->status === 'rejected') {
+                                            $percentage = 100;
+                                            $statusClass = 'bg-danger';
+                                        }
                                     }
-                                    if($student->status === 'interview') {
-                                        $percentage = 100;
-                                        $statusClass = 'bg-success';
-                                    }
-                                    if($student->status === 'rejected') {
-                                        $percentage = 100;
-                                        $statusClass = 'bg-danger';
-                                    }
+                                    
                                 @endphp
                                 {{ $percentage }}%
                             </div>
@@ -529,16 +532,20 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="status-step @if($percentage == 100) completed @endif">
                                     <div class="circle">
                                         @if($percentage == 100)
-                                            @if($student->status === 'rejected') ✗ @else ✓ @endif
+                                            @if(!empty($student))
+                                                @if($student->status === 'rejected') ✗ @else ✓ @endif
+                                            @endif
                                         @else 
                                             •
                                         @endif
                                     </div>
                                     <div>
-                                        @if($student->status === 'rejected')
-                                            Rejected
-                                        @else
-                                            Interview
+                                        @if(!empty($student))
+                                            @if($student->status === 'rejected')
+                                                Rejected
+                                            @else
+                                                Interview
+                                            @endif
                                         @endif
                                     </div>
                                 </div>

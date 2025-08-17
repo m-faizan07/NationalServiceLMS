@@ -315,7 +315,9 @@
             <div class="navbar-icons">
                 <i class="bi bi-bell"></i>
                 <i class="bi bi-gear"></i>
-                <i class="bi bi-box-arrow-right"></i>
+                <a href="{{ route('job.logout') }}">
+    <i class="bi bi-box-arrow-right"></i>
+</a>
             </div>
         </div>
     </nav>

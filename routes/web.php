@@ -163,6 +163,7 @@ use App\Http\Controllers\Student\AuthController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\ApplicationController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -1823,7 +1824,9 @@ Route::get('payslip/payslipPdf/{id}/{month}', [PaySlipController::class, 'paysli
 // Route::post('/student-login', [AuthController::class, 'postLogin'])->name('post.login');
 // // Main Home
 Route::get('/landing-page', [StudentController::class, 'index'])->name('landing_page');
-Route::get('/job-portal', [StudentController::class, 'jobPortal'])->name('job-portal');
+Route::get('/job-portal', [StudentController::class, 'jobPortal'])->name('job.login');
+Route::post('/job-login', [AuthController::class, 'jobPostLogin'])->name('job.login.submit');
+Route::get('/job-logout', [AuthController::class, 'jobLogout'])->name('job.logout');
 
 Route::get('/contact', [StudentController::class, 'contact'])->name('student_contact');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');

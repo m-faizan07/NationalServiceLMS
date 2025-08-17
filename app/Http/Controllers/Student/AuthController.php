@@ -41,7 +41,7 @@ class AuthController extends Controller
         return redirect()->route('student.profile.form');
     }
 
-    public function getLogin(){
+    public function getLogin(Request $request){
         if (Auth::guard('student')->check()) {
             return redirect()->route('student.profile.form');
         }
@@ -67,7 +67,7 @@ class AuthController extends Controller
             $parentDetail = $student->parentDetail;
             $documents = $student->documents()->get()->keyBy('type');
 
-            return view('landing-page.student.dashboard', compact('profile', 'permanentAddress', 'presentAddress', 'parentDetail', 'documents'));
+            return view('landing-page.student.profile-form', compact('profile', 'permanentAddress', 'presentAddress', 'parentDetail', 'documents'));
         }
 
         return back()->withErrors([
@@ -81,6 +81,34 @@ class AuthController extends Controller
         return redirect()->route('landing_page');
     }
 
+    public function jobPostLogin(Request $request)
+    {
+        $credentials = $request->only('email', 'password');
 
+        if (Auth::attempt($credentials)) {
+            // $request->session()->regenerate();
 
+            $user = Auth::user();
+
+            if ($user->type === 'super admin') {
+                $students = Student::with(['profile', 'addresses'])->get();
+                return view('landing-page.student.job_portal', compact('students'));
+            } else {
+                return back()->withErrors([
+                    'msg' => "You're not super admin.",
+                ]);
+            }
+        }
+
+        return back()->withErrors([
+            'msg' => 'The provided credentials do not match our records.',
+        ]);
+    }
+
+    public function jobLogout(Request $request)
+    {
+        Auth::guard('web')->logout();
+
+        return redirect()->route('landing_page');
+    }
 }
