@@ -1827,6 +1827,7 @@ Route::get('/landing-page', [StudentController::class, 'index'])->name('landing_
 Route::get('/job-portal', [StudentController::class, 'jobPortal'])->name('job.login');
 Route::post('/job-login', [AuthController::class, 'jobPostLogin'])->name('job.login.submit');
 Route::get('/job-logout', [AuthController::class, 'jobLogout'])->name('job.logout');
+Route::get('/job-applications', [StudentController::class, 'jobApplications'])->name('job.applications');
 
 Route::get('/contact', [StudentController::class, 'contact'])->name('student_contact');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');

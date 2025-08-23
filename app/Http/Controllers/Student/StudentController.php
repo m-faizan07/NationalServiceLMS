@@ -55,4 +55,10 @@ class StudentController extends Controller
         }
         return view('landing-page.student_contact');
     }
+
+    public function jobApplications(){
+        $students = Student::has('profile')->with(['profile', 'addresses'])->get();
+        $totalApplications = Student::has('profile')->count();
+        return view('landing-page.student.job_portal', compact('students', 'totalApplications'));
+    }
 }

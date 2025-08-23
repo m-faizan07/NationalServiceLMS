@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="https://www.iconexperience.com/_img/v_collection_png/256x256/shadow/school.png">
     <title>Job Portal - Application Review</title>
 
     <!-- Bootstrap 5 CSS -->
@@ -237,6 +238,14 @@
             background-color: #fff3cd;
             color: #856404;
         }
+        .status-approve {
+            background-color: green;
+            color: #856404;
+        }
+        .status-reject {
+            background-color: red;
+            color: #856404;
+        }
 
         .status-document {
             background-color: #cce7ff;
@@ -330,7 +339,7 @@
                     <div class="stats-icon blue">
                         <i class="bi bi-file-earmark-text"></i>
                     </div>
-                    <div class="stats-number">1,847</div>
+                    <div class="stats-number">{{$totalApplications}}</div>
                     <div class="stats-label">Total Applications</div>
                     <div class="stats-change">+23% from last month</div>
                 </div>
@@ -366,6 +375,11 @@
                 </div>
             </div>
         </div>
+@if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
         <!-- Navigation Tabs -->
         <ul class="nav nav-tabs nav-tabs-custom">
@@ -490,27 +504,37 @@
                                 <td>{{ $student->created_at->format('Y-m-d') }}</td>
                                 <td>
                                     <span class="status-badge status-pending">
-                                        {{ $student->profile->application_status ?? 'Pending Review' }}
+                                        {{ ucfirst($student->status) ?? 'Pending Review' }}
                                     </span>
                                 </td>
                                 <td>
-                                    <button class="action-btn view"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#studentModal"
-                                        data-name="{{ $student->name }}"
-                                        data-nid="{{ $student->profile->nid ?? 'N/A' }}"
-                                        data-mobile="{{ $student->profile->mobile ?? 'N/A' }}"
-                                        data-dob="{{ $student->profile->dob ?? 'N/A' }}"
-                                        data-age="{{ !empty($student->profile->dob) ? \Carbon\Carbon::parse($student->profile->dob)->age : 'N/A' }}"
-                                        data-address="{{ optional($student->addresses->first())->island ?? 'N/A' }}, {{ optional($student->addresses->first())->atoll ?? '' }}"
-                                        data-applied="{{ $student->profile->applied_field ?? 'N/A' }}"
-                                        data-submitted="{{ $student->created_at->format('Y-m-d') }}"
-                                        data-status="{{ $student->profile->application_status ?? 'Pending' }}"
-                                    >
-                                        <i class="bi bi-eye"></i>
-                                    </button>
+    <div class="d-flex gap-2 align-items-center">
+        {{-- View --}}
+        <button class="action-btn view border-0 bg-transparent p-0"
+            data-bs-toggle="modal"
+            data-bs-target="#studentModal"
+            data-name="{{ $student->name }}"
+            data-nid="{{ $student->profile->nid ?? 'N/A' }}"
+            data-mobile="{{ $student->profile->mobile ?? 'N/A' }}"
+            data-dob="{{ $student->profile->dob ?? 'N/A' }}"
+            data-age="{{ !empty($student->profile->dob) ? \Carbon\Carbon::parse($student->profile->dob)->age : 'N/A' }}"
+            data-address="{{ optional($student->addresses->first())->island ?? 'N/A' }}, {{ optional($student->addresses->first())->atoll ?? '' }}"
+            data-applied="{{ $student->profile->applied_field ?? 'N/A' }}"
+            data-submitted="{{ $student->created_at->format('Y-m-d') }}"
+            data-status="{{ $student->profile->application_status ?? 'Pending' }}"
+        >
+            <i class="bi bi-eye text-primary"></i>
+        </button>
+       
+        <a href="{{route('apllication.response',[$student->id,'approved'])}}" class="bg-transparent btn-sm me-1" data-bs-toggle="tooltip" data-bs-original-title="{{__('Approve')}}">
+                                                    <i class="bi bi-check-circle text-success"></i>
+                                                </a>
+                                                <a href="{{route('apllication.response',[$student->id,'rejected'])}}" class="bg-transparent btn-sm" data-bs-toggle="tooltip" data-bs-original-title="{{__('Reject')}}">
+                                                <i class="bi bi-x-circle text-danger"></i>
+                                                </a>
+    </div>
+</td>
 
-                                </td>
                             </tr>
                         @endforeach
                     </tbody>

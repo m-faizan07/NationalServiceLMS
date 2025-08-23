@@ -89,10 +89,8 @@ class AuthController extends Controller
             // $request->session()->regenerate();
 
             $user = Auth::user();
-
             if ($user->type === 'super admin') {
-                $students = Student::with(['profile', 'addresses'])->get();
-                return view('landing-page.student.job_portal', compact('students'));
+                return redirect()->route('job.applications');
             } else {
                 return back()->withErrors([
                     'msg' => "You're not super admin.",
