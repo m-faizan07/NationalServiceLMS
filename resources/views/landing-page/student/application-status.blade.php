@@ -1,5 +1,7 @@
 @extends('landing-page.student.dashboard')
-
+@php
+    $student = Student::findOrFail($id);
+@endphp
 @section('content')
 <div class="form-section">
     <h2>Application Status</h2>
@@ -7,8 +9,12 @@
     @if($status)
         <div class="status-card">
             <div class="status-header">
-                <h3>Current Status: <span class="status-{{ $status->status }}">{{ ucfirst(str_replace('_', ' ', $status->status)) }}</span></h3>
-            </div>
+                <h3>Current Status:
+                    <span class="status-label bg-gree {{ $student->status === 'approved' ? 'bg-green' : 'bg-default' }}">
+                        {{ ucfirst(str_replace('_', ' ', $student->status)) }}
+                    </span>
+                </h3>
+            </div>            
             
             @if($status->feedback)
                 <div class="feedback">
@@ -32,3 +38,4 @@
     @endif
 </div>
 @endsection
+

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 @section('page-title')
-    
+
 @endsection
 <!-- {{ __('Dashboard') }} -->
 @push('css-page')
@@ -1118,7 +1118,7 @@
             <div class="card mb-1 py-2 px-3" style="background:pink; color: white;">Generate Reports</div>
             <div class="card mb-1 py-2 px-3" style="background:blue; color: white;">Manage Users</div>
         </div>
-        
+
     </div>
     <div class="col-xxl-6 col-md-6 col-6 dash-info-card super-admin">
         <div class="info-card-inner card mb-0" style="background:none !important;">

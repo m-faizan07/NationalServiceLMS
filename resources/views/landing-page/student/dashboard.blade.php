@@ -417,6 +417,24 @@ document.addEventListener('DOMContentLoaded', function() {
             background: #007bff;
             color: white;
         }
+
+
+            .status-label {
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .bg-green {
+            background-color: #28a745; /* Bootstrap-style green */
+        }
+
+        .bg-default {
+            background-color: #6c757d; /* Neutral gray */
+        }
+
+
     </style>
 </head>
 <body>
