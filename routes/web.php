@@ -1851,11 +1851,50 @@ Route::prefix('student')->name('student.')->group(function () {
         // Documents routes
         Route::get('/documents', [StudentDocumentController::class, 'index'])->name('documents');
         Route::post('/documents', [StudentDocumentController::class, 'store'])->name('documents.store');
-        Route::get('/documents/{document}/download', [StudentDocumentController::class, 'download'])->name('documents.download');
+        // Route::get('/documents/{document}/download', [StudentDocumentController::class, 'download'])->name('documents.download');
         Route::delete('/documents/{document}', [StudentDocumentController::class, 'destroy'])->name('documents.destroy');
 
         // Application status
         Route::get('/status', [ApplicationStatusController::class, 'index'])->name('status');
     });
+});
+Route::middleware(['auth:student'])->group(function () {
+
+Route::get('/documents/{document}/download', [StudentDocumentController::class, 'download'])->name('documents.download');
+
+}); // <-- end here (no extra }); after this)
+
+
+// National Service LMS Routes (Super Admin Only)
+Route::prefix('national-service-lms')->name('national-service-lms.')->middleware(['auth', 'XSS'])->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\NationalServiceLMSController::class, 'dashboard'])->name('dashboard');
+
+    // Students Management
+    Route::get('/students', [App\Http\Controllers\NationalServiceLMSController::class, 'students'])->name('students');
+    Route::get('/students/{student}', [App\Http\Controllers\NationalServiceLMSController::class, 'studentShow'])->name('students.show');
+    Route::post('/students/{student}/update-stage', [App\Http\Controllers\NationalServiceLMSController::class, 'updateApplicationStage'])->name('students.update-stage');
+
+    // Training Batches
+    Route::get('/training/batches', [App\Http\Controllers\NationalServiceLMSController::class, 'trainingBatches'])->name('training.batches');
+    Route::get('/training/batches/create', [App\Http\Controllers\NationalServiceLMSController::class, 'createTrainingBatch'])->name('training.batches.create');
+    Route::post('/training/batches', [App\Http\Controllers\NationalServiceLMSController::class, 'storeTrainingBatch'])->name('training.batches.store');
+
+    // Interviews
+    Route::get('/interviews', [App\Http\Controllers\NationalServiceLMSController::class, 'interviews'])->name('interviews');
+    Route::post('/interviews/schedule', [App\Http\Controllers\NationalServiceLMSController::class, 'scheduleInterview'])->name('interviews.schedule');
+    Route::post('/interviews/{interview}/update-result', [App\Http\Controllers\NationalServiceLMSController::class, 'updateInterviewResult'])->name('interviews.update-result');
+
+    // Deployments
+    Route::get('/deployments', [App\Http\Controllers\NationalServiceLMSController::class, 'deployments'])->name('deployments');
+    Route::get('/deployments/create', [App\Http\Controllers\NationalServiceLMSController::class, 'createDeployment'])->name('deployments.create');
+    Route::post('/deployments', [App\Http\Controllers\NationalServiceLMSController::class, 'storeDeployment'])->name('deployments.store');
+
+    // Certificate Programs
+    Route::get('/certificates/programs', [App\Http\Controllers\NationalServiceLMSController::class, 'certificatePrograms'])->name('certificates.programs');
+    Route::get('/certificates/programs/create', [App\Http\Controllers\NationalServiceLMSController::class, 'createCertificateProgram'])->name('certificates.programs.create');
+    Route::post('/certificates/programs', [App\Http\Controllers\NationalServiceLMSController::class, 'storeCertificateProgram'])->name('certificates.programs.store');
+
+    // Reports
+    Route::get('/reports', [App\Http\Controllers\NationalServiceLMSController::class, 'reports'])->name('reports');
 });
 

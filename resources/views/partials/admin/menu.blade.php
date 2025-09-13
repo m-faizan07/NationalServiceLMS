@@ -1544,7 +1544,7 @@
             <ul class="dash-navbar">
                 @if (Gate::check('manage super admin dashboard'))
                     <li class="dash-item dash-hasmenu {{ Request::segment(1) == 'dashboard' ? ' active' : '' }}">
-                        <a href="{{ route('client.dashboard.view') }}" class="dash-link">
+                        <a href="{{ route('national-service-lms.dashboard') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-home"></i></span><span
                                 class="dash-mtext">{{ __('Dashboard') }}</span>
                         </a>
@@ -1578,7 +1578,7 @@
                         </a>
                     </li>
                 @endif -->
-                @if (\Auth::user()->type == 'super admin')
+                {{-- @if (\Auth::user()->type == 'super admin')
                     <li class="dash-item dash-hasmenu {{ request()->is('applications*') ? 'active' : '' }}">
                         <a href="{{ route('applications.index') }}" class="dash-link">
                             <span class="dash-micon"><i class="ti ti-arrow-up-right-circle"></i></span><span
@@ -1625,7 +1625,7 @@
                                 class="dash-mtext">{{ __('User Management') }}</span>
                         </a>
                     </li>
-                @endif
+                @endif --}}
 
                 <!-- <li class="dash-item dash-hasmenu  {{ Request::segment(1) == '' ? 'active' : '' }}">
                     <a href="{{ route('referral-program.index') }}" class="dash-link">
@@ -1663,6 +1663,54 @@
                     @include('landingpage::menu.landingpage')
                 @endif -->
 
+                @if (\Auth::user()->type == 'super admin')
+                    <li class="dash-item dash-hasmenu {{ request()->is('national-service-lms*') ? 'active' : '' }}">
+                        <a href="{{ route('national-service-lms.dashboard') }}" class="dash-link">
+                            <span class="dash-micon"><i class="ti ti-users"></i></span><span
+                                class="dash-mtext">{{ __('National Service LMS') }}</span>
+                        </a>
+                    </li>
+                @endif
+
+                {{-- === National Service LMS – standalone links === --}}
+                @if (\Auth::user()->type == 'super admin')
+                <li class="dash-item {{ request()->is('national-service-lms/students*') ? 'active' : '' }}">
+                    <a href="{{ route('national-service-lms.students') }}" class="dash-link">
+                        <span class="dash-micon"><i class="ti ti-users"></i></span>
+                        <span class="dash-mtext">{{ __('Students') }}</span>
+                    </a>
+                </li>
+
+                <li class="dash-item {{ request()->is('national-service-lms/training/batches*') ? 'active' : '' }}">
+                    <a href="{{ route('national-service-lms.training.batches') }}" class="dash-link">
+                        <span class="dash-micon"><i class="ti ti-plus"></i></span>
+                        <span class="dash-mtext">{{ __('Training Batch') }}</span>
+                    </a>
+                </li>
+
+                <li class="dash-item {{ request()->is('national-service-lms/interviews*') ? 'active' : '' }}">
+                    <a href="{{ route('national-service-lms.interviews') }}" class="dash-link">
+                        <span class="dash-micon"><i class="ti ti-calendar-event"></i></span>
+                        <span class="dash-mtext">{{ __('Schedule Interview') }}</span>
+                    </a>
+                </li>
+
+                <li class="dash-item {{ request()->is('national-service-lms/deployments*') ? 'active' : '' }}">
+                    <a href="{{ route('national-service-lms.deployments') }}" class="dash-link">
+                        <span class="dash-micon"><i class="ti ti-user-check"></i></span>
+                        <span class="dash-mtext">{{ __('Create Deployment') }}</span>
+                    </a>
+                </li>
+
+                {{-- <li class="dash-item {{ request()->is('national-service-lms/certificates*') ? 'active' : '' }}">
+                    <a href="{{ route('national-service-lms.certificates.programs') }}" class="dash-link">
+                        <span class="dash-micon"><i class="ti ti-user-check"></i></span>
+                        <span class="dash-mtext">{{ __('Create Certificates') }}</span>
+                    </a>
+                </li> --}}
+
+                {{-- certificates.programs.index --}}
+
                 @if (Gate::check('manage system settings'))
                     <li
                         class="dash-item dash-hasmenu {{ Request::route()->getName() == 'systems.index' ? ' active' : '' }}">
@@ -1672,6 +1720,8 @@
                         </a>
                     </li>
                 @endif
+               @endif
+
 
             </ul>
         @endif
